@@ -1,6 +1,5 @@
 planning_pipelines:
   pipeline_names: ["ompl"]
-
 plan_request_params:
   planner_id: ompl
   planning_attempts: 1
