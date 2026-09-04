@@ -48,7 +48,6 @@ install(TARGETS
 
 install(PROGRAMS
   ${PROJECT_NAME}/task_server.py
-  ${PROJECT_NAME}/alexa_interface.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
