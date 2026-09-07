@@ -28,6 +28,12 @@ def main() -> int:
     model = mujoco.MjModel.from_xml_path(str(args.model))
     data = mujoco.MjData(model)
 
+    # Position actuators hold the imported URDF pose.  Without this initial
+    # target, the passive arm simply falls under gravity before the user can
+    # interact with it.
+    if model.nu:
+        data.ctrl[:] = data.qpos[:model.nu]
+
     # launch_passive keeps the viewer responsive while this loop advances the
     # simulation in real time.
     with mujoco.viewer.launch_passive(model, data) as viewer:

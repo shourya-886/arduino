@@ -40,4 +40,14 @@
       </body>
     </body>
   </worldbody>
+
+  <!-- Hold the imported URDF pose by default.  These can later be driven by
+       replacing data.ctrl from a ROS controller or another input source. -->
+  <actuator>
+    <position name="joint_1_position" joint="joint_1" kp="10" ctrlrange="-1.5708 1.5708"/>
+    <position name="joint_2_position" joint="joint_2" kp="10" ctrlrange="-1.5708 1.5708"/>
+    <position name="joint_3_position" joint="joint_3" kp="10" ctrlrange="-1.5708 1.5708"/>
+    <position name="joint_4_position" joint="joint_4" kp="10" ctrlrange="-1.5708 0"/>
+    <position name="joint_5_position" joint="joint_5" kp="10" ctrlrange="0 1.5708"/>
+  </actuator>
 </mujoco>
