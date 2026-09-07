@@ -41,6 +41,7 @@ install(DIRECTORY launch/
 install(PROGRAMS
   scripts/mujoco_sim.py
   scripts/train_pick_place.py
+  scripts/evaluate_pick_place.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

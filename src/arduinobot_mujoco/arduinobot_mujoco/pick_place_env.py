@@ -3,6 +3,7 @@
 from pathlib import Path
 import gymnasium as gym
 import mujoco
+import mujoco.viewer
 import numpy as np
 from gymnasium import spaces
 from ament_index_python.packages import get_package_share_directory
@@ -44,9 +45,13 @@ class ArduinobotPickPlaceEnv(gym.Env):
         return self._observation(), {}
 
     def step(self, action):
-        self.data.ctrl[:] = np.clip(action, -1, 1) * np.pi / 2
+        # Actions are small joint-position increments, rather than abrupt
+        # commands spanning the complete joint range.
+        self.data.ctrl[:] = np.clip(self.data.qpos[:5] + np.clip(action, -1, 1) * 0.05, self.model.actuator_ctrlrange[:, 0], self.model.actuator_ctrlrange[:, 1])
         for _ in range(5):
             mujoco.mj_step(self.model, self.data)
+        if not np.all(np.isfinite(self.data.qpos)) or not np.all(np.isfinite(self.data.qvel)):
+            return self._observation(), -100.0, False, True, {"success": False, "unstable": True}
         self.step_count += 1
         obs = self._observation()
         cube, target = self.data.xpos[self.cube_body], self.data.site_xpos[self.target_site]
