@@ -23,4 +23,24 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+# Install the simulation description together with the meshes it references.
+# MuJoCo resolves mesh paths relative to the XML file, hence the meshes are
+# installed in urdf/meshes next to my_robot_mujoco.xml.
+install(DIRECTORY urdf/
+  DESTINATION share/${PROJECT_NAME}/urdf
+)
+
+install(DIRECTORY ../arduinobot_description/meshes/
+  DESTINATION share/${PROJECT_NAME}/urdf/meshes
+)
+
+install(DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}/launch
+)
+
+install(PROGRAMS
+  scripts/mujoco_sim.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()
