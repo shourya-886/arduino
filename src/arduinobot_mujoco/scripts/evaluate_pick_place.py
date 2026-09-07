@@ -17,7 +17,9 @@ def main():
     args = parser.parse_args()
 
     env = ArduinobotPickPlaceEnv(render_mode="human")
-    model = PPO.load(Path(args.model), env=env)
+    # Loading without passing the environment avoids an extra VecEnv wrapper
+    # around the native MuJoCo viewer.
+    model = PPO.load(Path(args.model))
     successes = 0
 
     for episode in range(args.episodes):

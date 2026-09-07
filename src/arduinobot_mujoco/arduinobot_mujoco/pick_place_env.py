@@ -38,8 +38,11 @@ class ArduinobotPickPlaceEnv(gym.Env):
     def reset(self, *, seed=None, options=None):
         super().reset(seed=seed)
         mujoco.mj_resetData(self.model, self.data)
-        self.data.qpos[:5] = self.np_random.uniform(-0.08, 0.08, 5)
-        self.data.qpos[5:12] = [0.15, 0.15, 0.04, 1, 0, 0, 0]
+        # Start from a repeatable upright pose; randomize only the cube so the
+        # first policy learns reaching rather than recovering from bad poses.
+        self.data.qpos[:5] = 0.0
+        cube_xy = self.np_random.uniform([0.10, 0.10], [0.20, 0.20])
+        self.data.qpos[5:12] = [cube_xy[0], cube_xy[1], 0.04, 1, 0, 0, 0]
         self.data.ctrl[:] = self.data.qpos[:self.model.nu]
         self.step_count = 0
         return self._observation(), {}
@@ -56,9 +59,21 @@ class ArduinobotPickPlaceEnv(gym.Env):
         obs = self._observation()
         cube, target = self.data.xpos[self.cube_body], self.data.site_xpos[self.target_site]
         grip = self.data.site_xpos[self.gripper_site]
-        cube_target, grip_cube = np.linalg.norm(cube - target), np.linalg.norm(grip - cube)
-        success = cube_target < 0.07 and cube[2] > 0.08
-        reward = -cube_target - 0.25 * grip_cube + (10.0 if success else 0.0)
+        cube_target = np.linalg.norm(cube - target)
+        grip_cube = np.linalg.norm(grip - cube)
+        grasped = grip_cube < 0.09
+        lifted = cube[2] > 0.09
+        success = cube_target < 0.07 and cube[2] > 0.10
+        # Dense staged shaping: approach the cube, close the distance, lift,
+        # then carry it to the target. The large terminal bonus emphasizes
+        # actual placement over merely approaching the target.
+        reward = -0.5 * grip_cube - 0.25 * cube_target
+        if grasped:
+            reward += 1.0
+        if lifted:
+            reward += 2.0
+        if success:
+            reward += 25.0
         return obs, float(reward), bool(success), self.step_count >= self.episode_length, {"success": bool(success)}
 
     def render(self):
