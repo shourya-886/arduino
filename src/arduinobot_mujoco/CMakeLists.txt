@@ -30,8 +30,8 @@ install(DIRECTORY urdf/
   DESTINATION share/${PROJECT_NAME}/urdf
 )
 
-install(DIRECTORY ../arduinobot_description/meshes/
-  DESTINATION share/${PROJECT_NAME}/urdf/meshes
+install(DIRECTORY meshes/
+  DESTINATION share/${PROJECT_NAME}/meshes
 )
 
 install(DIRECTORY launch/

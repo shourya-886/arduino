@@ -1,15 +1,19 @@
 <mujoco model="arduinobot">
-  <compiler angle="radian"/>
+  <compiler angle="radian" coordinate="local" meshdir="../meshes" autolimits="true"/>
   <option timestep="0.001" integrator="implicitfast" iterations="50"/>
 
+  <default>
+    <geom contype="1" conaffinity="1" friction="0.8 0.005 0.0001"/>
+  </default>
+
   <asset>
-    <mesh name="basement" content_type="model/stl" file="meshes/basement.STL" scale="0.01 0.01 0.01"/>
-    <mesh name="base_plate" content_type="model/stl" file="meshes/base_plate.STL" scale="0.01 0.01 0.01"/>
-    <mesh name="forward_drive_arm" content_type="model/stl" file="meshes/forward_drive_arm.STL" scale="0.01 0.01 0.01"/>
-    <mesh name="horizontal_arm" content_type="model/stl" file="meshes/horizontal_arm.STL" scale="0.01 0.01 0.01"/>
-    <mesh name="claw_support" content_type="model/stl" file="meshes/claw_support.STL" scale="0.01 0.01 0.01"/>
-    <mesh name="right_finger" content_type="model/stl" file="meshes/right_finger.STL" scale="0.01 0.01 0.01"/>
-    <mesh name="left_finger" content_type="model/stl" file="meshes/left_finger.STL" scale="0.01 0.01 0.01"/>
+    <mesh name="basement" content_type="model/stl" file="basement.STL" scale="0.01 0.01 0.01"/>
+    <mesh name="base_plate" content_type="model/stl" file="base_plate.STL" scale="0.01 0.01 0.01"/>
+    <mesh name="forward_drive_arm" content_type="model/stl" file="forward_drive_arm.STL" scale="0.01 0.01 0.01"/>
+    <mesh name="horizontal_arm" content_type="model/stl" file="horizontal_arm.STL" scale="0.01 0.01 0.01"/>
+    <mesh name="claw_support" content_type="model/stl" file="claw_support.STL" scale="0.01 0.01 0.01"/>
+    <mesh name="right_finger" content_type="model/stl" file="right_finger.STL" scale="0.01 0.01 0.01"/>
+    <mesh name="left_finger" content_type="model/stl" file="left_finger.STL" scale="0.01 0.01 0.01"/>
   </asset>
 
   <worldbody>
@@ -42,13 +46,13 @@
     </body>
   </worldbody>
 
-  <!-- Hold the imported URDF pose by default.  These can later be driven by
-       replacing data.ctrl from a ROS controller or another input source. -->
+  <!-- Torque motors. The viewer runner applies a small PD hold command by
+       default; a controller can replace data.ctrl with motor torques. -->
   <actuator>
-    <position name="joint_1_position" joint="joint_1" kp="2" dampratio="1" ctrlrange="-1.5708 1.5708"/>
-    <position name="joint_2_position" joint="joint_2" kp="2" dampratio="1" ctrlrange="-1.5708 1.5708"/>
-    <position name="joint_3_position" joint="joint_3" kp="2" dampratio="1" ctrlrange="-1.5708 1.5708"/>
-    <position name="joint_4_position" joint="joint_4" kp="2" dampratio="1" ctrlrange="-1.5708 0"/>
-    <position name="joint_5_position" joint="joint_5" kp="2" dampratio="1" ctrlrange="0 1.5708"/>
+    <motor name="joint_1_motor" joint="joint_1" gear="1" ctrlrange="-30 30"/>
+    <motor name="joint_2_motor" joint="joint_2" gear="1" ctrlrange="-30 30"/>
+    <motor name="joint_3_motor" joint="joint_3" gear="1" ctrlrange="-30 30"/>
+    <motor name="joint_4_motor" joint="joint_4" gear="1" ctrlrange="-30 30"/>
+    <motor name="joint_5_motor" joint="joint_5" gear="1" ctrlrange="-30 30"/>
   </actuator>
 </mujoco>
