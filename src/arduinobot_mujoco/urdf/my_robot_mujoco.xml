@@ -13,12 +13,6 @@
   </asset>
 
   <worldbody>
-    <geom name="ground" type="plane" size="2 2 0.01" rgba="0.18 0.18 0.18 1"/>
-    <body name="cube" pos="0.15 0.15 0.04">
-      <freejoint name="cube_free"/>
-      <geom name="cube_geom" type="box" size="0.04 0.04 0.04" mass="0.05" rgba="0.8 0.15 0.05 1"/>
-    </body>
-    <site name="place_target" pos="-0.15 0.15 0.045" type="cylinder" size="0.06 0.001" rgba="0.1 0.8 0.1 0.7"/>
     <geom pos="-0.5 -0.5 0" quat="1 0 0 0" type="mesh" mesh="basement"/>
     <body name="base_plate" pos="0 0 0.307">
       <inertial pos="0.0374568 0.0391323 0.0686462" quat="-0.263343 0.742225 -0.0620609 0.613107" mass="0.0545311" diaginertia="3.36311e-05 2.67876e-05 2.20813e-05"/>
@@ -33,7 +27,6 @@
           <joint name="joint_3" range="-1.5708 1.5708" actuatorfrcrange="-30 30" axis="1 0 0"/>
           <geom pos="-0.03 -0.4 -0.06" quat="0.5 0.5 0.5 0.5" type="mesh" mesh="horizontal_arm"/>
           <geom pos="0 0.77 -0.15" quat="0.707107 0 0 0.707107" type="mesh" mesh="claw_support"/>
-          <site name="gripper_site" pos="-0.13 0.95 -0.1" size="0.015" rgba="0.1 0.5 1 1"/>
           <body name="gripper_right" pos="-0.04 0.95 -0.1">
             <inertial pos="0.0291372 0.00819303 0.0020982" quat="-0.0891948 0.679743 -0.137753 0.714855" mass="0.00183079" diaginertia="5.62903e-07 5.41871e-07 2.60264e-08"/>
             <joint name="joint_4" range="-1.5708 0" actuatorfrcrange="-30 30"/>

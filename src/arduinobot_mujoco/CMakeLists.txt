@@ -40,13 +40,7 @@ install(DIRECTORY launch/
 
 install(PROGRAMS
   scripts/mujoco_sim.py
-  scripts/train_pick_place.py
-  scripts/evaluate_pick_place.py
   DESTINATION lib/${PROJECT_NAME}
-)
-
-install(DIRECTORY arduinobot_mujoco/
-  DESTINATION lib/python3.10/site-packages/arduinobot_mujoco
 )
 
 ament_package()
